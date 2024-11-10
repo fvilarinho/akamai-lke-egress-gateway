@@ -24,6 +24,18 @@ resource "linode_lke_cluster" "cluster" {
     type  = var.settings.cluster.workerNodes.type
     count = var.settings.cluster.workerNodes.count
   }
+
+  control_plane {
+    high_availability = true
+
+    acl {
+      enabled = true
+
+      addresses {
+        ipv4 = [ "${jsondecode(data.http.myIp.response_body).ip}/32" ]
+      }
+    }
+  }
 }
 
 # Saves the kubeconfig file locally.
