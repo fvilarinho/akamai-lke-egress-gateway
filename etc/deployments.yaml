@@ -16,11 +16,11 @@ spec:
         egressGateway: "true"
       containers:
         - name: egress-gateway
-          image: nginx:1.27.2
+          image: ubuntu/squid:latest
           volumeMounts:
             - name: egress-gateway-config
-              mountPath: /etc/nginx/conf.d/default.conf
-              subPath: default.conf
+              mountPath: /etc/squid/squid.conf
+              subPath: squid.conf
       volumes:
         - name: egress-gateway-config
           configMap:
@@ -44,9 +44,11 @@ spec:
         workerNodes: "true"
       containers:
         - name: client
-          image: alpine:3.20.3
+          image: alpine:latest
           command: ["sleep", "infinity"]
           tty: true
           env:
             - name: http_proxy
-              value: "http://egress-gateway"
+              value: "http://egress-gateway:3128"
+            - name: https_proxy
+              value: "http://egress-gateway:3128"
