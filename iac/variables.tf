@@ -1,11 +1,14 @@
+# Definition of the settings.
 variable "settings" {
   default = {
+    # General attributes used in the resources provisioning.
     general = {
       domain = "<domain>"
       email  = "<email>"
       token  = "<token>"
     }
 
+    # Used in the Cloud firewall provisioning.
     network = {
       allowedIps = {
         ipv4 = [ "0.0.0.0/0" ]
@@ -13,20 +16,23 @@ variable "settings" {
       }
     }
 
+    # Definition of the cluster.
     cluster = {
       namespace  = "default"
       identifier = "cluster1"
       tags       = [ "demo" ]
       region     = "<region>"
 
-      nodes = {
-        type  = "g6-standard-2"
-        count = 3
-      }
-
+      # Definition of the egress gateway.
       egressGateway = {
         type  = "g6-standard-2"
         count = 2
+      }
+
+      # Definition of the worker nodes.
+      workerNodes = {
+        type  = "g6-standard-2"
+        count = 3
       }
     }
   }

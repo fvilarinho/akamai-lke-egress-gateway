@@ -42,7 +42,7 @@ resource "null_resource" "certificateIssuance" {
   ]
 }
 
-# Saves the issued certificate locally to enable HTTPs traffic in Gitea.
+# Saves the issued certificate locally to enable HTTPs traffic.
 resource "local_sensitive_file" "certificate" {
   count      = (fileexists("/etc/letsencrypt/live/${var.settings.general.domain}/fullchain.pem") ? 1 : 0)
   filename   = local.certificateFilename
@@ -50,7 +50,7 @@ resource "local_sensitive_file" "certificate" {
   depends_on = [ null_resource.certificateIssuance]
 }
 
-# Saves the issued certificate key locally to enable HTTPs traffic in Gitea.
+# Saves the issued certificate key locally to enable HTTPs traffic.
 resource "local_sensitive_file" "certificateKey" {
   count      = (fileexists("/etc/letsencrypt/live/${var.settings.general.domain}/privkey.pem") ? 1 : 0)
   filename   = local.certificateKeyFilename

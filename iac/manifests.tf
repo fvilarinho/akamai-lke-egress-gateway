@@ -1,3 +1,4 @@
+# Required variables.
 locals {
   applyManifestScriptFilename = abspath(pathexpand("../bin/applyManifest.sh"))
   configMapsManifestFilename  = abspath(pathexpand("../etc/configMaps.yaml"))
@@ -5,7 +6,9 @@ locals {
   servicesManifestFilename    = abspath(pathexpand("../etc/services.yaml"))
 }
 
+# Applies the config maps.
 resource "null_resource" "applyConfigMaps" {
+  # Applies only when the files changed.
   triggers = {
     always_run = "${filemd5(local.applyManifestScriptFilename)}|${filemd5(local.configMapsManifestFilename)}"
   }
@@ -27,7 +30,9 @@ resource "null_resource" "applyConfigMaps" {
   ]
 }
 
+# Applies the deployments.
 resource "null_resource" "applyDeployments" {
+  # Applies only when the files changed.
   triggers = {
     always_run = "${filemd5(local.applyManifestScriptFilename)}|${filemd5(local.deploymentsManifestFilename)}"
   }
@@ -50,7 +55,9 @@ resource "null_resource" "applyDeployments" {
   ]
 }
 
+# Applies the services.
 resource "null_resource" "applyServices" {
+  # Applies only when the files changed.
   triggers = {
     always_run = "${filemd5(local.applyManifestScriptFilename)}|${filemd5(local.servicesManifestFilename)}"
   }

@@ -7,27 +7,27 @@ data:
     server {
       listen 80;
 
-      # This enables NGINX to act as a forward proxy
+      # This enables NGINX to act as a forward proxy.
       location / {
         # Allow all incoming requests to be proxied.
         proxy_pass $scheme://$http_host$request_uri;
 
-        # Set headers to forward the original request details
+        # Set headers to forward the original request details.
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
 
-        # Enable resolving of external domains (like internet requests)
+        # Enable resolving of external domains (like internet requests).
         resolver 8.8.8.8 8.8.4.4 valid=300s;
         resolver_timeout 5s;
 
-        # If needed, add timeout settings
+        # If needed, add timeout settings.
         proxy_connect_timeout 5s;
         proxy_read_timeout 60s;
         proxy_send_timeout 60s;
 
-        # Optional: limit the size of responses
+        # Optional: limit the size of responses.
         client_max_body_size 10m;
       }
     }

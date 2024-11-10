@@ -1,4 +1,6 @@
+# Definition of terraform settings.
 terraform {
+  # Definition of the remote state management in Object storage.
   backend "s3" {
     bucket                      = "fvilarin-devops"
     key                         = "akamai-lke-egress-gateway.tfstate"
@@ -9,6 +11,7 @@ terraform {
     skip_metadata_api_check     = true
   }
 
+  # Required providers.
   required_providers {
     linode = {
       source = "linode/linode"
@@ -17,13 +20,10 @@ terraform {
     null = {
       source = "hashicorp/null"
     }
-
-    random = {
-      source = "hashicorp/random"
-    }
   }
 }
 
+# Definition of the token for the resources provisioning.
 provider "linode" {
   token = var.settings.general.token
 }

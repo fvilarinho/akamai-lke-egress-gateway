@@ -1,3 +1,4 @@
+# Required variables.
 locals {
   nodesToBeProtected = flatten([ for pool in linode_lke_cluster.cluster.pool : [ for node in pool.nodes : node.instance_id ] ])
   allowedPublicIps   = concat([ for node in data.linode_instances.nodesToBeProtected.instances : "${node.ip_address}/32" ], [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
@@ -5,10 +6,12 @@ locals {
   allowedIpv4        = concat(var.settings.network.allowedIps.ipv4, concat(local.allowedPublicIps, local.allowedPrivateIps))
 }
 
+# Fetches the local IP.
 data "http" "myIp" {
   url = "https://ipinfo.io"
 }
 
+# Fetches all nodes to be protected in the Cloud firewall.
 data "linode_instances" "nodesToBeProtected" {
   filter {
     name   = "id"
@@ -18,6 +21,7 @@ data "linode_instances" "nodesToBeProtected" {
   depends_on = [ linode_lke_cluster.cluster ]
 }
 
+# Definition of the Cloud firewall and inbound/outbound rules.
 resource "linode_firewall" "default" {
   label           = "${var.settings.cluster.identifier}-firewall"
   tags            = var.settings.cluster.tags
