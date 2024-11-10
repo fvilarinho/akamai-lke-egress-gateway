@@ -1,7 +1,8 @@
 ## Akamai LKE Egress Gateway
 
 ### Introduction
-This project has the intention to demonstrate the how to deploy an LKE Egress Gateway (Proxy) in Akamai Cloud Computing.
+This project has the intention to demonstrate the how to deploy an LKE Egress Gateway (HTTP/HTTPs Proxy) in Akamai Cloud
+Computing.
 
 ### Requirements
 - [terraform 1.5.x](https://terraform.io)
@@ -15,7 +16,7 @@ It automates (using **Terraform**) the provisioning of the following resources i
 environment:
 - **Cloud Firewall**: Please check the file `iac/firewall.tf` for more details.
 - **LKE (Linode Kubernetes Engine)**: Please check the file `iac/lke.tf` for more details. 
-- **[nginx](https://nginx.org)**: Please check the file `iac/manifests.tf` for more details.
+- **[squid](https://www.squid-cache.org)**: Please check the file `iac/manifests.tf` for more details.
 
 All Terraform files use `variables` that are stored in the `iac/variables.tf`.
 
