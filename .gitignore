@@ -1,7 +1,7 @@
 /.idea/
 /etc/.kubeconfig
+/etc/tls/.certificateIssuance.credentials
 /etc/tls/certs/fullchain.pem
 /etc/tls/private/privkey.pem
 /iac/.terraform*
 /iac/terraform.tfvars
-/etc/tls/.certificateIssuance.credentials
