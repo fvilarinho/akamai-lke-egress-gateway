@@ -30,7 +30,7 @@ function applyManifest() {
 # Main function.
 function main() {
   checkDependencies
-  applyRoutes
+  applyManifest
 }
 
 main
