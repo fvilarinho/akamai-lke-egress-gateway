@@ -2,7 +2,7 @@
 
 ### Introduction
 This project has the intention to demonstrate the how to deploy an LKE Egress Gateway (HTTP/HTTPs Proxy) in Akamai Cloud
-Computing.
+Computing, tunneling the requests from pods via nodes labeled with egressGateway=true in the cluster.
 
 ### Requirements
 - [terraform 1.5.x](https://terraform.io)
