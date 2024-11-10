@@ -21,7 +21,8 @@ function checkDependencies() {
   fi
 }
 
-function applyRoutes() {
+# Apply the manifest file replacing the placeholders with the correspondent environment variable.
+function applyManifest() {
   $KUBECTL_CMD apply -f "$MANIFEST_FILENAME" \
                      -n "$NAMESPACE"
 }
