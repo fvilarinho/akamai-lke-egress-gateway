@@ -15,7 +15,7 @@ data:
     # Block the rest.
     http_access deny all
     
-    # Allow HTTPS CONNECT (TLS passthrough) method.
+    # Allow CONNECT (TLS passthrough) method.
     acl SSL_ports port 443
     acl CONNECT method CONNECT
     http_access allow CONNECT SSL_ports localnet
