@@ -45,7 +45,7 @@ spec:
       containers:
         - name: client
           image: alpine:latest
-          command: ["sleep", "infinity"]
+          command: [ "sleep", "infinity" ]
           tty: true
           env:
             - name: http_proxy
