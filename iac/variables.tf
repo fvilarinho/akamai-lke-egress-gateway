@@ -20,7 +20,7 @@ variable "settings" {
     cluster = {
       namespace  = "default"
       identifier = "cluster1"
-      tags       = [ "demo" ]
+      tags       = [ "demo", "egress-gateway" ]
       region     = "<region>"
 
       # Definition of the egress gateway.
