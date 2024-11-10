@@ -21,10 +21,22 @@ spec:
             - name: egress-gateway-config
               mountPath: /etc/nginx/conf.d/default.conf
               subPath: default.conf
+            - name: egress-gateway-certificate
+              mountPath: /etc/tls/certs/fullchain.pem
+              subPath: fullchain.pem
+            - name: egress-gateway-certificate-key
+              mountPath: /etc/tls/private/privkey.pem
+              subPath: privkey.pem
       volumes:
         - name: egress-gateway-config
           configMap:
             name: egress-gateway-config
+        - name: egress-gateway-certificate
+          configMap:
+            name: egress-gateway-certificate
+        - name: egress-gateway-certificate-key
+          configMap:
+            name: egress-gateway-certificate-key
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -51,4 +63,4 @@ spec:
             - name: HTTP_PROXY
               value: "http://egress-gateway"
             - name: HTTPS_PROXY
-              value: "http://egress-gateway"
+              value: "https://egress-gateway"

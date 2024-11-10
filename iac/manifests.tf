@@ -1,27 +1,31 @@
 # Required variables.
 locals {
+  configurationFilename = abspath(pathexpand("../etc/nginx/conf.d/default.conf"))
+
+  applySettingsScriptFilename = abspath(pathexpand("../bin/applySettings.sh"))
   applyManifestScriptFilename = abspath(pathexpand("../bin/applyManifest.sh"))
-  configMapsManifestFilename  = abspath(pathexpand("../etc/configMaps.yaml"))
   deploymentsManifestFilename = abspath(pathexpand("../etc/deployments.yaml"))
   servicesManifestFilename    = abspath(pathexpand("../etc/services.yaml"))
 }
 
-# Applies the config maps.
-resource "null_resource" "applyConfigMaps" {
+# Applies the settings.
+resource "null_resource" "applySettings" {
   # Applies only when the files changed.
   triggers = {
-    always_run = "${filemd5(local.applyManifestScriptFilename)}|${filemd5(local.configMapsManifestFilename)}"
+    always_run = filemd5(local.applySettingsScriptFilename)
   }
 
   provisioner "local-exec" {
     environment = {
-      KUBECONFIG        = local_sensitive_file.clusterKubeconfig.filename
-      MANIFEST_FILENAME = local.configMapsManifestFilename
-      NAMESPACE         = var.settings.cluster.namespace
+      KUBECONFIG               = local_sensitive_file.clusterKubeconfig.filename
+      NAMESPACE                = var.settings.cluster.namespace
+      CONFIGURATION_FILENAME   = local.configurationFilename
+      CERTIFICATE_FILENAME     = local.certificateFilename
+      CERTIFICATE_KEY_FILENAME = local.certificateKeyFilename
     }
 
     quiet   = true
-    command = local.applyManifestScriptFilename
+    command = local.applySettingsScriptFilename
   }
 
   depends_on = [
@@ -51,7 +55,7 @@ resource "null_resource" "applyDeployments" {
   depends_on = [
     linode_lke_cluster.cluster,
     local_sensitive_file.clusterKubeconfig,
-    null_resource.applyConfigMaps
+    null_resource.applySettings
   ]
 }
 
@@ -75,7 +79,6 @@ resource "null_resource" "applyServices" {
 
   depends_on = [
     linode_lke_cluster.cluster,
-    local_sensitive_file.clusterKubeconfig,
-    null_resource.applyConfigMaps
+    local_sensitive_file.clusterKubeconfig
   ]
 }
