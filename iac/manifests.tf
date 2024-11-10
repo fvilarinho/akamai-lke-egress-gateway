@@ -1,31 +1,27 @@
 # Required variables.
 locals {
-  configurationFilename = abspath(pathexpand("../etc/nginx/conf.d/default.conf"))
-
-  applySettingsScriptFilename = abspath(pathexpand("../bin/applySettings.sh"))
   applyManifestScriptFilename = abspath(pathexpand("../bin/applyManifest.sh"))
+  configMapsManifestFilename  = abspath(pathexpand("../etc/configMaps.yaml"))
   deploymentsManifestFilename = abspath(pathexpand("../etc/deployments.yaml"))
   servicesManifestFilename    = abspath(pathexpand("../etc/services.yaml"))
 }
 
-# Applies the settings.
-resource "null_resource" "applySettings" {
+# Applies the config maps.
+resource "null_resource" "applyConfigMaps" {
   # Applies only when the files changed.
   triggers = {
-    always_run = filemd5(local.applySettingsScriptFilename)
+    always_run = "${filemd5(local.applyManifestScriptFilename)}|${file(local.configMapsManifestFilename)}"
   }
 
   provisioner "local-exec" {
     environment = {
-      KUBECONFIG               = local_sensitive_file.clusterKubeconfig.filename
-      NAMESPACE                = var.settings.cluster.namespace
-      CONFIGURATION_FILENAME   = local.configurationFilename
-      CERTIFICATE_FILENAME     = local.certificateFilename
-      CERTIFICATE_KEY_FILENAME = local.certificateKeyFilename
+      KUBECONFIG        = local_sensitive_file.clusterKubeconfig.filename
+      MANIFEST_FILENAME = local.configMapsManifestFilename
+      NAMESPACE         = var.settings.cluster.namespace
     }
 
     quiet   = true
-    command = local.applySettingsScriptFilename
+    command = local.applyManifestScriptFilename
   }
 
   depends_on = [
@@ -55,7 +51,7 @@ resource "null_resource" "applyDeployments" {
   depends_on = [
     linode_lke_cluster.cluster,
     local_sensitive_file.clusterKubeconfig,
-    null_resource.applySettings
+    null_resource.applyConfigMaps
   ]
 }
 

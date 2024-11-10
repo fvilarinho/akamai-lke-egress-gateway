@@ -6,7 +6,6 @@ This project has the intention to demonstrate the how to deploy an LKE Egress Ga
 ### Requirements
 - [terraform 1.5.x](https://terraform.io)
 - [kubectl 1.31.x](https://kubernetes.io/docs/reference/kubectl/kubectl)
-- [certbot 2.11.x](https://certbot.eff.org)
 - [Akamai Cloud Computing account](https://cloud.linode.com)
 - `Any Linux Distribution` or
 - `Windows 10 or later` or
@@ -16,7 +15,6 @@ It automates (using **Terraform**) the provisioning of the following resources i
 environment:
 - **Cloud Firewall**: Please check the file `iac/firewall.tf` for more details.
 - **LKE (Linode Kubernetes Engine)**: Please check the file `iac/lke.tf` for more details. 
-- **TLS Certificates**: Please check the file `iac/certificate.yaml` for more details.
 - **[nginx](https://nginx.org)**: Please check the file `iac/manifests.tf` for more details.
 
 All Terraform files use `variables` that are stored in the `iac/variables.tf`.

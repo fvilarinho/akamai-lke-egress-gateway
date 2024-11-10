@@ -7,6 +7,8 @@ function showLabel() {
   elif [[ "$0" == *"deploy.sh"* ]]; then
     echo "** Deploy **"
   fi
+
+  echo
 }
 
 # Prepares the environment to execute this script.
@@ -14,7 +16,6 @@ function prepareToExecute() {
   # Required binaries
   export TERRAFORM_CMD=$(which terraform)
   export KUBECTL_CMD=$(which kubectl)
-  export CERTBOT_CMD=$(which certbot)
 }
 
 # Shows the banner.
