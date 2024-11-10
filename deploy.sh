@@ -8,14 +8,14 @@ function checkDependencies() {
     exit 1
   fi
 
-  if [ -z "$HELM_CMD" ]; then
-    echo "helm is not installed! Please install it first to continue!"
+  if [ -z "$KUBECTL_CMD" ]; then
+    echo "kubectl is not installed! Please install it first to continue!"
 
     exit 1
   fi
 
-  if [ -z "$KUBECTL_CMD" ]; then
-    echo "kubectl is not installed! Please install it first to continue!"
+  if [ -z "$CERTBOT_CMD" ]; then
+    echo "certbot is not installed! Please install it first to continue!"
 
     exit 1
   fi

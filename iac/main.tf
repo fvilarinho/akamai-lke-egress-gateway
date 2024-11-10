@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket                      = "fvilarin-devops"
-    key                         = "akamai-kubeslice.tfstate"
+    key                         = "akamai-lke-egress-gateway.tfstate"
     region                      = "us-east-1"
     endpoint                    = "us-east-1.linodeobjects.com"
     skip_credentials_validation = true
