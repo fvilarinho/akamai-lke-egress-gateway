@@ -1,9 +1,8 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: egress-gateway
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app: egress-gateway
@@ -27,11 +26,10 @@ spec:
             name: egress-gateway-config
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: client
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: client
