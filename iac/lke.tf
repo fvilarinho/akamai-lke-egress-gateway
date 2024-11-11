@@ -11,6 +11,7 @@ resource "linode_lke_cluster" "cluster" {
       egressGateway = true
     }
 
+    tags  = var.settings.cluster.tags
     type  = var.settings.cluster.egressGateway.type
     count = var.settings.cluster.egressGateway.count
   }
@@ -21,6 +22,7 @@ resource "linode_lke_cluster" "cluster" {
       workerNodes = true
     }
 
+    tags  = var.settings.cluster.tags
     type  = var.settings.cluster.workerNodes.type
     count = var.settings.cluster.workerNodes.count
   }
