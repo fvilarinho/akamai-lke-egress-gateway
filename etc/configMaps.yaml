@@ -44,4 +44,4 @@ data:
     backend postgresql_backend
        mode tcp
        balance roundrobin
-       server postgresql-server postgresql-gateway.vila.app.br:5432 check
+       server postgresql-server <your-postgresql-server-hostname>:5432 check
