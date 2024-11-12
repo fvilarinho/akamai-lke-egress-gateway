@@ -26,13 +26,13 @@ variable "settings" {
       # Definition of the egress gateway.
       egressGateway = {
         type  = "g6-standard-2"
-        count = 2
+        count = 1
       }
 
       # Definition of the worker nodes.
       workerNodes = {
         type  = "g6-standard-2"
-        count = 3
+        count = 2
       }
     }
   }

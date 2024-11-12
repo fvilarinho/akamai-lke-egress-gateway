@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: egress-gateway-config
+  name: http-proxy-config
 data:
   squid.conf: |
     # Listen port.
@@ -19,3 +19,29 @@ data:
     acl SSL_ports port 443
     acl CONNECT method CONNECT
     http_access allow CONNECT SSL_ports localnet
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tcp-proxy-config
+data:
+  haproxy.cfg: |
+    global
+       log stdout format raw local0
+  
+    defaults
+       log global
+       mode tcp
+       timeout connect 10s  # Connection timeout for connecting to backend servers.
+       timeout client 1m    # Timeout for client inactivity.
+       timeout server 1m    # Timeout for server inactivity.
+    
+    frontend postgresql_frontend
+       bind *:5432
+       mode tcp
+       default_backend postgresql_backend
+  
+    backend postgresql_backend
+       mode tcp
+       balance roundrobin
+       server postgresql-server postgresql-gateway.vila.app.br:5432 check

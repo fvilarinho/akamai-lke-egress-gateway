@@ -1,29 +1,56 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: egress-gateway
+  name: http-proxy
 spec:
   selector:
     matchLabels:
-      app: egress-gateway
+      app: http-proxy
   template:
     metadata:
       labels:
-        app: egress-gateway
+        app: http-proxy
     spec:
       nodeSelector:
         egressGateway: "true"
       containers:
-        - name: egress-gateway
+        - name: http-proxy
           image: ubuntu/squid:latest
           volumeMounts:
-            - name: egress-gateway-config
+            - name: http-proxy-config
               mountPath: /etc/squid/squid.conf
               subPath: squid.conf
       volumes:
-        - name: egress-gateway-config
+        - name: http-proxy-config
           configMap:
-            name: egress-gateway-config
+            name: http-proxy-config
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: tcp-proxy
+spec:
+  selector:
+    matchLabels:
+      app: tcp-proxy
+  template:
+    metadata:
+      labels:
+        app: tcp-proxy
+    spec:
+      nodeSelector:
+        egressGateway: "true"
+      containers:
+        - name: tcp-proxy
+          image: haproxy:latest
+          volumeMounts:
+            - name: tcp-proxy-config
+              mountPath: /usr/local/etc/haproxy/haproxy.cfg
+              subPath: haproxy.cfg
+      volumes:
+        - name: tcp-proxy-config
+          configMap:
+            name: tcp-proxy-config
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -47,6 +74,6 @@ spec:
           tty: true
           env:
             - name: http_proxy
-              value: "http://egress-gateway:3128"
+              value: "http://web-gateway:3128"
             - name: https_proxy
-              value: "http://egress-gateway:3128"
+              value: "http://web-gateway:3128"
